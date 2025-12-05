@@ -14,7 +14,7 @@ export function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
             <div className="w-12 h-12 relative">
-              <Image src="/hostiggo-logo.png" alt="Hostiggo Logo" fill className="object-contain" />
+              <Image src="/hostiggo-logo.jpeg" alt="Hostiggo Logo" fill className="object-contain" />
             </div>
             <h1 className="text-2xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               Hostiggo
@@ -54,7 +54,7 @@ export function Home() {
           <div className="text-center mb-8">
             <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-3">Earn While You Refer</h3>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Share your referral link and get 0% Hostiggo commission on the first 10 bookings of each referred property
+              Share your referral link and get 0% Hostiggo commission on the first 10 bookings of each referred properties and services
               once you bring 10 properties on board!
             </p>
           </div>
