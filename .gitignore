@@ -27,3 +27,5 @@ ts-debug.log*
 # System
 .DS_Store
 Thumbs.db
+.vercel
+.env*.local

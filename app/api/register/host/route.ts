@@ -1,67 +1,81 @@
-import { createClient } from "@supabase/supabase-js"
-import { type NextRequest, NextResponse } from "next/server"
+import { createClient } from "@supabase/supabase-js";
+import { type NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json()
+    const body = await req.json();
 
-    // Use service role key for public registrations (bypasses RLS restrictions)
-    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
+    // Use Service Role Key to bypass RLS for public registration
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
 
-    const { data: hostData, error: hostError } = await supabase
-      .from("hosts")
+    // Insert into 'listings' table matching your 14-step FormData
+    const { data: listingData, error: dbError } = await supabase
+      .from("listings")
       .insert({
-        full_name: body.full_name,
-        phone: body.phone,
-        whatsapp: body.whatsapp,
-        email: body.email || null,
-        property_name: body.property_name,
-        full_address: body.full_address,
-        state: body.state,
-        district: body.district,
+        // 1. Owner Details
+        owner_name: body.ownerName,
+        owner_phone: body.ownerPhone,
+        owner_city: body.ownerCity,
+
+        // 2. Address & Location
+        country: body.country,
+        street_address: body.streetAddress,
+        nearby_landmark: body.nearbyLandmark,
         city: body.city,
-        google_maps_link: body.google_maps_link || null,
-        number_of_rooms: body.number_of_rooms,
-        max_guests: body.max_guests,
-        description: body.description,
-        amenities: body.amenities,
-        base_price: body.base_price,
-        weekend_price: body.weekend_price,
-        referral_code: body.referral_code || null,
-        referred_by_code: body.referred_by_code || null,
-        status: "pending",
+        state: body.state,
+        postal_code: body.postalCode,
+        latitude: body.latitude,
+        longitude: body.longitude,
+
+        // 3. Property Overview
+        property_type: body.propertyType,
+        property_title: body.propertyTitle,
+        bedrooms: body.bedrooms, // JSONB handles the array automatically
+        accommodation_type: body.accommodationType,
+        amenities: body.amenities, // Text[] stores the array of strings
+        photo_urls: body.photoUrls, // Array of public URLs from Supabase Storage
+
+        // 4. Pricing & Rules
+        weekday_price: body.weekdayPrice,
+        weekend_price: body.weekendPrice,
+        paid_addons: body.paidAddons, // JSONB handles the object
+        check_in_time: body.checkInTime,
+        check_out_time: body.checkOutTime,
+
+        // 5. Boolean Flags
+        smoking_allowed: body.smokingAllowed,
+        pets_allowed: body.petsAllowed,
+        parties_allowed: body.partiesAllowed,
+        quiet_hours: body.quietHours,
+        has_exterior_camera: body.hasExteriorCamera,
+        has_smoke_alarm: body.hasSmokeAlarm,
+
+        // 6. Eligibility & Meta
+        is_allowed_to_host: body.isAllowedToHost,
+        agreed_to_policy: body.agreedToPolicy,
+        contact_preference: body.contactPreference,
+        status: "pending", // Initial review status
       })
-      .select()
+      .select();
 
-    if (hostError) {
-      console.error("[v0] Host insert error:", hostError)
-      return NextResponse.json({ error: hostError.message }, { status: 400 })
-    }
-
-    const hostId = hostData[0].id
-
-    if (body.photoUrls && body.photoUrls.length > 0) {
-      const mediaInserts = body.photoUrls.map((url: string) => ({
-        host_id: hostId,
-        photo_url: url,
-        media_type: "image",
-      }))
-
-      const { error: mediaError } = await supabase.from("host_media").insert(mediaInserts)
-
-      if (mediaError) {
-        console.error("[v0] Media insert error:", mediaError)
-        // Don't fail the entire registration if media insert fails
-      }
+    if (dbError) {
+      console.error("[Backend] Listing insert error:", dbError);
+      return NextResponse.json({ error: dbError.message }, { status: 400 });
     }
 
     return NextResponse.json({
       success: true,
-      message: "Registration successful! Our team will review and contact you soon.",
-      hostId: hostId,
-    })
+      message: "Registration successful! Our team will contact you soon.",
+      listingId: listingData[0].id,
+    });
   } catch (error: any) {
-    console.error("[v0] Registration error:", error)
-    return NextResponse.json({ error: error.message || "Registration failed" }, { status: 500 })
+    console.error("[Backend] Internal registration error:", error);
+    return NextResponse.json(
+      { error: error.message || "Registration failed" },
+      { status: 500 }
+    );
   }
 }
