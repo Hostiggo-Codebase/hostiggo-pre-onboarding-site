@@ -60,7 +60,6 @@ export default function AddressStep({
         const lng = pos.coords.longitude;
         setMarkerPos({ lat, lng });
         map?.panTo({ lat, lng });
-        fetchAddressAndConfirm(lat, lng);
       });
     }
   };
