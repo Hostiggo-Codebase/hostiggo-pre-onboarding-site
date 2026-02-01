@@ -1,63 +1,67 @@
-'use client';
+"use client";
 
-const steps = [
-  {
-    step: '01',
-    title: 'Submit Your Details',
-    description: 'Tell us about your property, ownership details, and guest preferences in our simple form.',
-  },
-  {
-    step: '02',
-    title: 'Hostiggo Team Connects',
-    description: 'We reach out via WhatsApp or call within 24 hours to understand your property better.',
-  },
-  {
-    step: '03',
-    title: 'Verification & Refinement',
-    description: 'We verify details, suggest optimal pricing, and help perfect your listing photos.',
-  },
-  {
-    step: '04',
-    title: 'Approved & Live',
-    description: 'Your property launches on our platform. We continue supporting you as hosts arrive.',
-  },
-];
+export default function HowItWorks({
+  onStartOnboarding,
+}: {
+  onStartOnboarding: () => void;
+}) {
+  const steps = [
+    {
+      n: "1",
+      t: "Create your listing",
+      d: "Add photos, pricing rules & amenities",
+    },
+    {
+      n: "2",
+      t: "Get Bookings",
+      d: "Approve manually or enable instant booking",
+    },
+    { n: "3", t: "Get Paid", d: "Payouts directly to your account" },
+  ];
 
-export default function HowItWorks({ onStartOnboarding }: { onStartOnboarding: () => void }) {
   return (
-    <section id="how" className="py-20 px-4 sm:px-6 lg:px-8 bg-stone-50">
+    <section className="py-24 px-6 bg-[#EFF7FF] overflow-hidden" id="how">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center space-y-4 mb-16">
-          <h2 className="text-4xl sm:text-5xl font-light text-blue-950">How Host Onboarding Works</h2>
-          <p className="text-lg text-stone-600 max-w-2xl mx-auto">
-            Four simple steps from property submission to approved listing.
+        <div className="text-center mb-16 space-y-4">
+          <h2 className="text-[59px] font-bold text-[#004772] tracking-[0.04em]">
+            How Host Onboarding Works?
+          </h2>
+          <p className="text-[#323232] text-[29px] font-medium tracking-[0.27em] uppercase">
+            Start earning in 3 simple steps
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {steps.map((item, i) => (
-            <div key={i} className="relative">
-              {i < steps.length - 1 && (
-                <div className="hidden md:block absolute top-12 left-1/2 w-full h-0.5 bg-stone-200" style={{ left: 'calc(50% + 48px)' }} />
-              )}
-              <div className="relative z-10 space-y-4">
-                <div className="w-24 h-24 rounded-full bg-blue-950 text-white flex items-center justify-center">
-                  <span className="text-3xl font-light">{item.step}</span>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="space-y-8">
+            {steps.map((step) => (
+              <div
+                key={step.n}
+                className="flex items-center gap-8 bg-white p-8 rounded-[43px] border border-[#A2A2A2] shadow-sm"
+              >
+                <span className="text-[110px] font-extrabold text-[#004772] leading-none">
+                  {step.n}
+                </span>
+                <div className="space-y-2">
+                  <h4 className="text-[38px] font-semibold text-[#3A3A3A]">
+                    {step.t}
+                  </h4>
+                  <p className="text-[23px] text-[#494949] leading-tight">
+                    {step.d}
+                  </p>
                 </div>
-                <h3 className="text-xl font-medium text-blue-950">{item.title}</h3>
-                <p className="text-sm text-stone-600 leading-relaxed">{item.description}</p>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <div className="mt-16 text-center">
-          <button
-            onClick={onStartOnboarding}
-            className="px-8 py-3 bg-blue-950 text-white rounded-lg font-medium hover:bg-blue-900 transition"
-          >
-            Begin Onboarding
-          </button>
+          <div className="relative flex justify-center lg:justify-end">
+            {/* Glowing background for rocket */}
+            <div className="absolute rounded-full opacity-[57%] bg-[radial-gradient(126.3%_126.3%_at_9.35%_31.48%,rgba(233,255,253,0.33)_0%,#42948D_100%)] w-[600px] h-[600px] -right-20" />
+            <img
+              src="/254b250221134658a25aea837e5f7cd52.png"
+              alt="Rocket Onboarding"
+              className="relative w-[555px] h-auto drop-shadow-xl z-10"
+            />
+          </div>
         </div>
       </div>
     </section>

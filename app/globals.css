@@ -1,7 +1,13 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-
+@theme inline {
+  --font-poppins: var(--font-poppins);
+}
 @custom-variant dark (&:is(.dark *));
+
+html {
+  scroll-behavior: smooth;
+}
 
 :root {
   --background: #ffffff;
