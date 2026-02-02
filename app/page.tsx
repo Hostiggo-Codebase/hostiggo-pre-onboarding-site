@@ -7,6 +7,7 @@ import WhyHostiggo from "@/components/ui/WhyHostiggo";
 import HowItWorks from "@/components/ui/HowItWorks";
 import OnboardingForm from "@/components/ui/OnboardingForm";
 import Footer from "@/components/ui/Footer";
+import FAQ from "@/components/ui/FAQ";
 
 export default function Home() {
   const [showForm, setShowForm] = useState(false);
@@ -19,6 +20,7 @@ export default function Home() {
           <Hero onStartOnboarding={() => setShowForm(true)} />
           <WhyHostiggo />
           <HowItWorks onStartOnboarding={() => setShowForm(true)} />
+          <FAQ />
         </>
       ) : (
         <OnboardingForm onBack={() => setShowForm(false)} />
