@@ -21,36 +21,34 @@ export const NavigationButtons = ({
       onBack();
     } else {
       console.warn(
-        "NavigationButtons: onBack prop is missing or not a function."
+        "NavigationButtons: onBack prop is missing or not a function.",
       );
     }
   };
 
   return (
-    <div className="sticky bottom-0 bg-white/90 backdrop-blur-sm border-t border-stone-100 p-4 pb-8 mt-auto z-50">
-      <div className="max-w-md mx-auto flex gap-4">
-        <button
-          type="button"
-          onClick={handleBackClick}
-          className="flex-1 py-3 px-6 border border-stone-300 text-blue-950 rounded-xl font-bold hover:bg-stone-50 transition flex items-center justify-center gap-2 shadow-sm active:scale-95"
-        >
-          <ChevronLeft className="w-5 h-5" />
-          Back
-        </button>
+    <div className="onboarding-footer flex flex-col sm:flex-row justify-center gap-8 mt-10">
+      <button
+        type="button"
+        onClick={handleBackClick}
+        className="w-[259px] h-[75px] rounded-[14px] border-2 border-[#004772] text-[#004772] text-lg sm:text-xl font-semibold hover:bg-[#004772]/5 transition flex items-center justify-center gap-2"
+      >
+        <ChevronLeft className="w-5 h-5" />
+        Back
+      </button>
 
-        <button
-          type="button"
-          onClick={onNext}
-          disabled={nextDisabled}
-          className={`flex-1 py-3 px-6 rounded-xl font-bold transition active:scale-95 ${
-            !nextDisabled
-              ? "bg-blue-900 text-white hover:bg-blue-950 shadow-md"
-              : "bg-stone-200 text-stone-400 cursor-not-allowed"
-          }`}
-        >
-          Next
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={onNext}
+        disabled={nextDisabled}
+        className={`w-[259px] h-[75px] rounded-[14px] text-white text-lg sm:text-xl font-medium transition ${
+          !nextDisabled
+            ? "bg-[#004772] hover:bg-[#003656] shadow-lg"
+            : "bg-gray-300 cursor-not-allowed"
+        }`}
+      >
+        Next
+      </button>
     </div>
   );
 };

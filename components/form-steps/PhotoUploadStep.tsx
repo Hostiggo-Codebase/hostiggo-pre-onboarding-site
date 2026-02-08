@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import { Plus, Lightbulb, X, ChevronLeft } from "lucide-react";
+import OnboardingStepLayout from "./OnboardingStepLayout";
 
 interface Props {
   formData: any;
@@ -11,9 +12,13 @@ interface Props {
 
 export default function PhotoUploadStep({ formData, onNext, onBack }: Props) {
   // Initialize with existing photos or an empty array
-  const [photos, setPhotos] = useState<(File | string)[]>(
-    formData.photos || []
-  );
+  const initialPhotos: (File | string)[] = Array.isArray(formData.photos)
+    ? formData.photos.filter(
+        (photo: unknown): photo is File | string =>
+          typeof photo === "string" || photo instanceof File,
+      )
+    : [];
+  const [photos, setPhotos] = useState<(File | string)[]>(initialPhotos);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,30 +42,15 @@ export default function PhotoUploadStep({ formData, onNext, onBack }: Props) {
   // Helper to generate preview URLs for File objects
   const getPreviewUrl = (photo: File | string) => {
     if (typeof photo === "string") return photo;
-    return URL.createObjectURL(photo);
+    if (photo instanceof File) return URL.createObjectURL(photo);
+    return "";
   };
 
   const isNextDisabled = photos.length < 3;
 
   return (
-    <div className="max-w-md mx-auto relative min-h-screen flex flex-col">
-      <div className="p-4 space-y-6 flex-1">
-        {/* Top Header Utilities */}
-        <div className="flex justify-between items-center">
-          <button
-            type="button"
-            className="text-sky-500 font-bold text-sm underline decoration-2 underline-offset-4"
-          >
-            Save & Exit
-          </button>
-          <button
-            type="button"
-            className="px-4 py-1.5 border border-stone-300 rounded-lg text-sm text-stone-700 font-bold"
-          >
-            Need Help?
-          </button>
-        </div>
-
+    <OnboardingStepLayout>
+      <div className="space-y-6">
         <div className="space-y-2">
           <h2 className="text-2xl font-bold text-blue-950">Property Photos</h2>
           <p className="text-stone-500 text-sm leading-relaxed">
@@ -136,35 +126,33 @@ export default function PhotoUploadStep({ formData, onNext, onBack }: Props) {
         </p>
       </div>
 
-      {/* Sticky Bottom Navigation */}
-      <div className="sticky bottom-0 bg-white/90 backdrop-blur-sm border-t border-stone-100 p-4 pb-8 mt-auto z-50">
-        <div className="max-w-md mx-auto flex gap-4">
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              if (onBack) onBack();
-            }}
-            className="flex-1 py-3 px-6 border-2 border-blue-950 text-blue-950 rounded-xl font-bold hover:bg-stone-50 transition active:scale-95 flex items-center justify-center gap-2"
-          >
-            <ChevronLeft className="w-5 h-5" />
-            Back
-          </button>
+      {/* Footer Buttons */}
+      <div className="onboarding-footer flex flex-col sm:flex-row justify-center gap-8 mt-10">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            if (onBack) onBack();
+          }}
+          className="w-[259px] h-[75px] rounded-[14px] border-2 border-[#004772] text-[#004772] text-lg sm:text-xl font-semibold hover:bg-[#004772]/5 transition flex items-center justify-center gap-2"
+        >
+          <ChevronLeft className="w-5 h-5" />
+          Back
+        </button>
 
-          <button
-            type="button"
-            onClick={handleNext}
-            disabled={isNextDisabled}
-            className={`flex-1 py-3 px-6 rounded-xl font-bold transition active:scale-95 shadow-md ${
-              !isNextDisabled
-                ? "bg-blue-900 text-white hover:bg-blue-950"
-                : "bg-stone-200 text-stone-400 cursor-not-allowed shadow-none"
-            }`}
-          >
-            Next
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={handleNext}
+          disabled={isNextDisabled}
+          className={`w-[259px] h-[75px] rounded-[14px] text-white text-lg sm:text-xl font-medium transition ${
+            !isNextDisabled
+              ? "bg-[#004772] hover:bg-[#003656] shadow-lg"
+              : "bg-gray-300 cursor-not-allowed"
+          }`}
+        >
+          Next
+        </button>
       </div>
-    </div>
+    </OnboardingStepLayout>
   );
 }

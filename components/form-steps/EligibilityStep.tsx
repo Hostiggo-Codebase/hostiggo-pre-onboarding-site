@@ -2,37 +2,29 @@
 
 import React, { useState } from "react";
 import { ChevronLeft } from "lucide-react";
+import OnboardingStepLayout from "./OnboardingStepLayout";
 interface Props {
   formData: any;
-  onSubmit: (data: any) => void; // Parent must pass handleSubmit here
+  onSubmit: (data?: any) => void;
   onBack: () => void;
+  isSubmitting?: boolean;
 }
-export default function EligibilityStep({ onSubmit, onBack }: any) {
+export default function EligibilityStep({
+  onSubmit,
+  onBack,
+  isSubmitting = false,
+}: Props) {
   const [eligibility, setEligibility] = useState({
     allowed: true,
     policy: false,
   });
 
   const isComplete = eligibility.allowed && eligibility.policy;
+  const isPublishDisabled = !isComplete || isSubmitting;
 
   return (
-    <div className="max-w-md mx-auto relative min-h-screen flex flex-col bg-white">
-      <div className="p-4 space-y-6 flex-1">
-        <div className="flex justify-between items-center">
-          <button
-            type="button"
-            className="text-sky-500 font-bold text-sm underline decoration-2 underline-offset-4"
-          >
-            Save & Exit
-          </button>
-          <button
-            type="button"
-            className="px-4 py-1.5 border border-stone-300 rounded-lg text-sm text-stone-700 font-bold"
-          >
-            Need Help?
-          </button>
-        </div>
-
+    <OnboardingStepLayout>
+      <div className="space-y-6">
         <h2 className="text-2xl font-bold text-blue-950">
           Confirm Hosting Eligibility
         </h2>
@@ -84,29 +76,27 @@ export default function EligibilityStep({ onSubmit, onBack }: any) {
         </div>
       </div>
 
-      <div className="sticky bottom-0 bg-white/90 backdrop-blur-sm border-t border-stone-100 p-4 pb-8 z-50">
-        <div className="max-w-md mx-auto flex gap-4">
-          <button
-            type="button"
-            onClick={onBack}
-            className="flex-1 py-3 border-2 border-blue-950 text-blue-950 rounded-xl font-bold flex items-center justify-center gap-2"
-          >
-            <ChevronLeft className="w-5 h-5" /> Back
-          </button>
-          <button
-            type="button"
-            onClick={() => isComplete && onSubmit()}
-            disabled={!isComplete}
-            className={`flex-1 py-3 rounded-xl font-bold transition shadow-md ${
-              isComplete
-                ? "bg-blue-900 text-white"
-                : "bg-stone-200 text-stone-400"
-            }`}
-          >
-            Publish
-          </button>
-        </div>
+      <div className="onboarding-footer flex flex-col sm:flex-row justify-center gap-8 mt-10">
+        <button
+          type="button"
+          onClick={onBack}
+          className="w-[259px] h-[75px] rounded-[14px] border-2 border-[#004772] text-[#004772] text-lg sm:text-xl font-semibold hover:bg-[#004772]/5 transition flex items-center justify-center gap-2"
+        >
+          <ChevronLeft className="w-5 h-5" /> Back
+        </button>
+        <button
+          type="button"
+          onClick={() => isComplete && !isSubmitting && onSubmit()}
+          disabled={isPublishDisabled}
+          className={`w-[259px] h-[75px] rounded-[14px] text-white text-lg sm:text-xl font-medium transition ${
+            isPublishDisabled
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-[#004772] hover:bg-[#003656] shadow-lg"
+          }`}
+        >
+          {isSubmitting ? "Publishing..." : "Publish"}
+        </button>
       </div>
-    </div>
+    </OnboardingStepLayout>
   );
 }

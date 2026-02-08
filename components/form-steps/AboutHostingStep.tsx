@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { CheckCircle2, ChevronLeft, HelpCircle } from "lucide-react";
+import { CheckCircle2, ChevronLeft } from "lucide-react";
+import OnboardingStepLayout from "./OnboardingStepLayout";
 
 interface Props {
   formData: any;
@@ -16,24 +17,8 @@ export default function AboutHostingStep({ formData, onNext, onBack }: Props) {
   };
 
   return (
-    <div className="max-w-md mx-auto relative min-h-screen flex flex-col bg-white">
-      <div className="p-4 space-y-8 flex-1">
-        {/* Top Header Utilities */}
-        <div className="flex justify-between items-center">
-          <button
-            type="button"
-            className="text-sky-500 font-bold text-sm underline decoration-2 underline-offset-4"
-          >
-            Save & Exit
-          </button>
-          <button
-            type="button"
-            className="px-4 py-1.5 border border-stone-300 rounded-lg text-sm text-stone-700 font-bold"
-          >
-            Need Help?
-          </button>
-        </div>
-
+    <OnboardingStepLayout>
+      <div className="space-y-8">
         <div className="space-y-2">
           <h2 className="text-2xl font-bold text-blue-950">About Hosting</h2>
           <p className="text-stone-500 text-sm leading-relaxed">
@@ -103,30 +88,27 @@ export default function AboutHostingStep({ formData, onNext, onBack }: Props) {
         </p>
       </div>
 
-      {/* Sticky Bottom Navigation matching unified UI */}
-      <div className="sticky bottom-0 bg-white/90 backdrop-blur-sm border-t border-stone-100 p-4 pb-8 mt-auto z-50">
-        <div className="max-w-md mx-auto flex gap-4">
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              onBack();
-            }}
-            className="flex-1 py-3 px-6 border-2 border-blue-950 text-blue-950 rounded-xl font-bold hover:bg-stone-50 transition active:scale-95 flex items-center justify-center gap-2"
-          >
-            <ChevronLeft className="w-5 h-5" />
-            Back
-          </button>
-
-          <button
-            type="button"
-            onClick={handleNext}
-            className="flex-1 py-3 px-6 bg-blue-900 text-white rounded-xl font-bold hover:bg-blue-950 transition active:scale-95 shadow-md"
-          >
-            Next
-          </button>
-        </div>
+      {/* Footer Buttons */}
+      <div className="onboarding-footer flex flex-col sm:flex-row justify-center gap-8 mt-10">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            onBack();
+          }}
+          className="w-[259px] h-[75px] rounded-[14px] border-2 border-[#004772] text-[#004772] text-lg sm:text-xl font-semibold hover:bg-[#004772]/5 transition flex items-center justify-center gap-2"
+        >
+          <ChevronLeft className="w-5 h-5" />
+          Back
+        </button>
+        <button
+          type="button"
+          onClick={handleNext}
+          className="w-[259px] h-[75px] rounded-[14px] text-white text-lg sm:text-xl font-medium transition bg-[#004772] hover:bg-[#003656] shadow-lg"
+        >
+          Next
+        </button>
       </div>
-    </div>
+    </OnboardingStepLayout>
   );
 }

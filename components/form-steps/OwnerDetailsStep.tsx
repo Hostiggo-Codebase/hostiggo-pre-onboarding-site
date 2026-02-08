@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ChevronLeft } from "lucide-react";
+import OnboardingStepLayout from "./OnboardingStepLayout";
 
 interface OwnerDetailsStepProps {
   formData: any;
@@ -14,19 +14,25 @@ export default function OwnerDetailsStep({
   onNext,
   onBack,
 }: OwnerDetailsStepProps) {
-  const [name, setName] = useState(formData.ownerName || "");
+  const initialName = (formData.ownerName || "").trim();
+  const nameParts = initialName.split(/\s+/).filter(Boolean);
+  const [firstName, setFirstName] = useState(nameParts[0] || "");
+  const [lastName, setLastName] = useState(nameParts.slice(1).join(" "));
   const [phone, setPhone] = useState(formData.ownerPhone || "");
   const [city, setCity] = useState(formData.ownerCity || "");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const phoneDigits = phone.replace(/\D/g, "");
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    if (!name.trim()) newErrors.name = "Name is required";
-    if (!phone.trim()) newErrors.phone = "Phone number is required";
-    if (!city.trim()) newErrors.city = "City is required";
-    if (phone.trim() && !/^[0-9]{10}$/.test(phone.replace(/\D/g, ""))) {
-      newErrors.phone = "Please enter a valid 10-digit phone number";
+    if (!firstName.trim()) newErrors.firstName = "Required";
+    if (!lastName.trim()) newErrors.lastName = "Required";
+    if (!phone.trim()) {
+      newErrors.phone = "Required";
+    } else if (phoneDigits.length !== 10) {
+      newErrors.phone = "Enter a valid 10-digit mobile number";
     }
+    if (!city.trim()) newErrors.city = "Required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -34,137 +40,104 @@ export default function OwnerDetailsStep({
   const handleNext = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      onNext({ ownerName: name, ownerPhone: phone, ownerCity: city });
+      onNext({
+        ownerName: [firstName, lastName].filter(Boolean).join(" "),
+        ownerPhone: phone,
+        ownerCity: city,
+      });
     }
   };
 
-  const isNextDisabled = !name || !phone || !city;
+  const isNextDisabled =
+    !firstName || !lastName || !phone || !city || phoneDigits.length !== 10;
 
   return (
-    <div className="max-w-md mx-auto relative min-h-screen flex flex-col bg-white">
-      <div className="p-4 space-y-6 flex-1">
-        {/* Top Header Utilities matching the design theme */}
-        <div className="flex justify-between items-center">
-          <button
-            type="button"
-            className="text-sky-500 font-bold text-sm underline decoration-2 underline-offset-4"
-          >
-            Save & Exit
-          </button>
-          <button
-            type="button"
-            className="px-4 py-1.5 border border-stone-300 rounded-lg text-sm text-stone-700 font-bold"
-          >
-            Need Help?
-          </button>
-        </div>
-
-        <div className="space-y-2">
-          <h2 className="text-2xl font-bold text-blue-950">Your Information</h2>
-          <p className="text-stone-500 text-sm leading-relaxed">
-            Let's start with your basic details to set up your profile
-          </p>
-        </div>
-
-        <div className="space-y-5 pt-2">
-          {/* Full Name Input */}
-          <div className="space-y-2">
-            <label className="block text-sm font-bold text-blue-950">
-              Full Name
-            </label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Enter your name"
-              className={`w-full px-4 py-3 border rounded-2xl bg-white focus:outline-none focus:ring-1 focus:ring-blue-950 transition shadow-sm ${
-                errors.name ? "border-red-400" : "border-stone-200"
-              }`}
-            />
-            {errors.name && (
-              <p className="text-xs text-red-500 font-medium ml-1">
-                {errors.name}
-              </p>
-            )}
-          </div>
-
-          {/* Phone Number Input */}
-          <div className="space-y-2">
-            <label className="block text-sm font-bold text-blue-950">
-              Phone Number
-            </label>
-            <input
-              type="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              placeholder="10-digit number"
-              className={`w-full px-4 py-3 border rounded-2xl bg-white focus:outline-none focus:ring-1 focus:ring-blue-950 transition shadow-sm ${
-                errors.phone ? "border-red-400" : "border-stone-200"
-              }`}
-            />
-            {errors.phone && (
-              <p className="text-xs text-red-500 font-medium ml-1">
-                {errors.phone}
-              </p>
-            )}
-          </div>
-
-          {/* City Input */}
-          <div className="space-y-2">
-            <label className="block text-sm font-bold text-blue-950">
-              City
-            </label>
-            <input
-              type="text"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-              placeholder="Enter your city"
-              className={`w-full px-4 py-3 border rounded-2xl bg-white focus:outline-none focus:ring-1 focus:ring-blue-950 transition shadow-sm ${
-                errors.city ? "border-red-400" : "border-stone-200"
-              }`}
-            />
-            {errors.city && (
-              <p className="text-xs text-red-500 font-medium ml-1">
-                {errors.city}
-              </p>
-            )}
-          </div>
-        </div>
-
-        <p className="text-stone-400 text-xs italic pt-10 text-center">
-          You can always change this after publish
+    <OnboardingStepLayout>
+      <div className="text-center mb-8">
+        <h1 className="text-[#282828] text-3xl sm:text-4xl font-semibold tracking-[0.02em] leading-tight">
+          Your Information
+        </h1>
+        <p className="text-[#494949] text-base sm:text-lg font-medium tracking-[0.02em] mt-2">
+          Add your basic details to set up your profile
         </p>
       </div>
 
-      {/* Sticky Bottom Navigation matching unified UI */}
-      <div className="sticky bottom-0 bg-white/90 backdrop-blur-sm border-t border-stone-100 p-4 pb-8 mt-auto z-50">
-        <div className="max-w-md mx-auto flex gap-4">
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              if (onBack) onBack();
-            }}
-            className="flex-1 py-3 px-6 border-2 border-blue-950 text-blue-950 rounded-xl font-bold hover:bg-stone-50 transition active:scale-95 flex items-center justify-center gap-2"
-          >
-            <ChevronLeft className="w-5 h-5" />
-            Back
-          </button>
+      <form onSubmit={handleNext} id="owner-form">
+        <h2 className="text-[#282828] text-2xl font-semibold mb-6 tracking-[0.02em]">
+          Personal details
+        </h2>
 
-          <button
-            type="button"
-            onClick={handleNext}
-            disabled={isNextDisabled}
-            className={`flex-1 py-3 px-6 rounded-xl font-bold transition active:scale-95 shadow-md ${
-              !isNextDisabled
-                ? "bg-blue-900 text-white hover:bg-blue-950"
-                : "bg-stone-200 text-stone-400 cursor-not-allowed shadow-none"
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <input
+            type="text"
+            placeholder="First name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            className={`rounded-[14px] border bg-white p-4 text-base sm:text-lg outline-none transition ${
+              errors.firstName
+                ? "border-red-500"
+                : "border-black/20 focus:border-[#004772]"
             }`}
-          >
-            Next
-          </button>
+          />
+          <input
+            type="text"
+            placeholder="Last name"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            className={`rounded-[14px] border bg-white p-4 text-base sm:text-lg outline-none transition ${
+              errors.lastName
+                ? "border-red-500"
+                : "border-black/20 focus:border-[#004772]"
+            }`}
+          />
         </div>
+
+        <div className="space-y-6">
+          <input
+            type="text"
+            placeholder="City"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            className="w-full rounded-[14px] border border-black/20 bg-white p-4 text-base sm:text-lg outline-none focus:border-[#004772]"
+          />
+
+          <div className="space-y-2">
+            <input
+              type="tel"
+              placeholder="Mobile number"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className={`w-full rounded-[14px] border bg-white p-4 text-base sm:text-lg outline-none transition focus:border-[#004772] ${
+                errors.phone ? "border-red-500" : "border-black/20"
+              }`}
+            />
+            {errors.phone && (
+              <p className="text-xs text-red-500 font-medium">{errors.phone}</p>
+            )}
+          </div>
+        </div>
+      </form>
+
+      <div className="onboarding-footer flex flex-col sm:flex-row justify-center gap-8 mt-10">
+        <button
+          onClick={onBack}
+          className="w-[259px] h-[75px] rounded-[14px] border-2 border-[#004772] text-[#004772] text-lg sm:text-xl font-semibold hover:bg-[#004772]/5 transition"
+        >
+          Previous
+        </button>
+        <button
+          type="submit"
+          form="owner-form"
+          disabled={isNextDisabled}
+          className={`w-[259px] h-[75px] rounded-[14px] text-white text-lg sm:text-xl font-medium transition ${
+            isNextDisabled
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-[#004772] hover:bg-[#003656] shadow-lg"
+          }`}
+        >
+          Next
+        </button>
       </div>
-    </div>
+    </OnboardingStepLayout>
   );
 }

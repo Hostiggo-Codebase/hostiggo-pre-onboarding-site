@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { NavigationButtons } from "./NavigationButtons";
+import OnboardingStepLayout from "./OnboardingStepLayout";
 import {
   Home,
   Building2,
@@ -206,24 +207,8 @@ export default function PropertyTypeStep({ formData, onNext, onBack }: Props) {
   };
 
   return (
-    <div className="max-w-md mx-auto relative min-h-screen flex flex-col">
-      <div className="p-4 space-y-6 flex-1">
-        {/* Top Header Utilities */}
-        <div className="flex justify-between items-center">
-          <button
-            type="button"
-            className="text-sky-500 font-bold text-sm underline decoration-2 underline-offset-4"
-          >
-            Save & Exit
-          </button>
-          <button
-            type="button"
-            className="px-4 py-1.5 border border-stone-300 rounded-lg text-sm text-stone-700 font-bold"
-          >
-            Need Help?
-          </button>
-        </div>
-
+    <OnboardingStepLayout>
+      <div className="space-y-6">
         {/* Search Bar */}
         <div className="relative">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 w-5 h-5" />
@@ -242,7 +227,7 @@ export default function PropertyTypeStep({ formData, onNext, onBack }: Props) {
         <div className="space-y-10 pb-10">
           {propertyCategories.map((category) => {
             const filteredItems = category.items.filter((item) =>
-              item.label.toLowerCase().includes(searchTerm)
+              item.label.toLowerCase().includes(searchTerm),
             );
             if (filteredItems.length === 0) return null;
 
@@ -269,12 +254,12 @@ export default function PropertyTypeStep({ formData, onNext, onBack }: Props) {
         </div>
       </div>
 
-      {/* REUSABLE STICKY BUTTONS */}
+      {/* Footer Buttons */}
       <NavigationButtons
         onBack={onBack}
         onNext={handleNext}
         nextDisabled={!selectedType}
       />
-    </div>
+    </OnboardingStepLayout>
   );
 }

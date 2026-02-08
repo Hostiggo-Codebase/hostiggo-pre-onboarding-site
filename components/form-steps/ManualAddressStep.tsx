@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { ShieldCheck, ChevronLeft } from "lucide-react";
+import OnboardingStepLayout from "./OnboardingStepLayout";
 
 const FormInput = ({ label, error, ...props }: any) => (
   <div className="space-y-1.5">
@@ -86,9 +87,9 @@ export default function ManualAddressStep({ formData, onNext, onBack }: any) {
   ];
 
   return (
-    <div className="max-w-md mx-auto min-h-screen flex flex-col bg-white">
+    <OnboardingStepLayout>
       {/* Scrollable Content Area */}
-      <div className="p-4 space-y-6 flex-1">
+      <div className="space-y-6">
         <div className="flex justify-between items-center pt-2">
           <h2 className="text-2xl font-bold text-blue-950">Confirm Address</h2>
           <button className="px-4 py-1.5 border border-stone-300 rounded-lg text-sm text-stone-700 font-bold hover:bg-stone-50 transition">
@@ -183,28 +184,30 @@ export default function ManualAddressStep({ formData, onNext, onBack }: any) {
             </div>
           </div>
         </div>
-
-        {/* Extra padding to ensure content isn't hidden by sticky footer */}
-        <div className="h-20" />
       </div>
 
-      {/* Sticky Navigation Footer */}
-      <div className="sticky bottom-0 bg-white/90 backdrop-blur-sm border-t border-stone-100 p-4 pb-8 z-50">
-        <div className="max-w-md mx-auto flex gap-4">
-          <button
-            onClick={onBack}
-            className="flex-1 py-3.5 border-2 border-blue-950 rounded-xl font-bold flex items-center justify-center gap-1 text-blue-950 hover:bg-stone-50 transition active:scale-95"
-          >
-            <ChevronLeft className="w-4 h-4" /> Previous
-          </button>
-          <button
-            onClick={() => validate() && onNext(address)}
-            className="flex-1 py-3.5 bg-blue-900 text-white rounded-xl font-bold shadow-lg hover:bg-blue-950 transition active:scale-95"
-          >
-            Confirm & Next
-          </button>
-        </div>
+      {/* Footer Buttons */}
+      <div className="onboarding-footer flex flex-col sm:flex-row justify-center gap-8 mt-10">
+        <button
+          onClick={onBack}
+          className="w-[259px] h-[75px] rounded-[14px] border-2 border-[#004772] text-[#004772] text-lg sm:text-xl font-semibold hover:bg-[#004772]/5 transition flex items-center justify-center gap-2"
+        >
+          <ChevronLeft className="w-5 h-5" /> Previous
+        </button>
+        <button
+          onClick={() =>
+            validate() &&
+            onNext({
+              ...address,
+              latitude: formData.latitude ?? null,
+              longitude: formData.longitude ?? null,
+            })
+          }
+          className="w-[259px] h-[75px] rounded-[14px] text-white text-lg sm:text-xl font-medium transition bg-[#004772] hover:bg-[#003656] shadow-lg"
+        >
+          Confirm & Next
+        </button>
       </div>
-    </div>
+    </OnboardingStepLayout>
   );
 }

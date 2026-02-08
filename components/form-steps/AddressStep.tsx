@@ -8,6 +8,7 @@ import {
   MarkerF,
 } from "@react-google-maps/api";
 import { ChevronLeft, Search, Info, Target } from "lucide-react";
+import OnboardingStepLayout from "./OnboardingStepLayout";
 
 const libraries: "places"[] = ["places"];
 
@@ -27,7 +28,7 @@ export default function AddressStep({
   const [markerPos, setMarkerPos] = useState(
     formData.latitude
       ? { lat: formData.latitude, lng: formData.longitude }
-      : { lat: 28.4089, lng: 77.3178 }
+      : { lat: 27.4089, lng: 87.3178 },
   );
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
 
@@ -49,18 +50,34 @@ export default function AddressStep({
           postalCode: getComp(["postal_code"]),
           country: getComp(["country"]) || "India",
         });
+      } else {
+        onNext({
+          latitude: null,
+          longitude: null,
+        });
       }
     });
   };
 
   const useCurrentLocation = () => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((pos) => {
-        const lat = pos.coords.latitude;
-        const lng = pos.coords.longitude;
-        setMarkerPos({ lat, lng });
-        map?.panTo({ lat, lng });
-      });
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          setMarkerPos({ lat, lng });
+          map?.panTo({ lat, lng });
+          map?.setZoom(17);
+        },
+        (error) => {
+          console.error("Failed to get current location:", error);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0,
+        },
+      );
     }
   };
 
@@ -68,31 +85,8 @@ export default function AddressStep({
     return <div className="p-10 text-center font-bold">Loading Map...</div>;
 
   return (
-    <div className="max-w-md mx-auto min-h-screen bg-white flex flex-col">
-      <div className="px-4 pt-6 space-y-2">
-        <div className="flex gap-1">
-          {[...Array(14)].map((_, i) => (
-            <div
-              key={i}
-              className={`h-1.5 flex-1 rounded-full ${
-                i < 4 ? "bg-blue-950" : "bg-stone-200"
-              }`}
-            />
-          ))}
-        </div>
-        <p className="text-xs text-stone-500 font-bold">Step 4 of 14</p>
-      </div>
-
-      <div className="p-4 space-y-6 flex-1">
-        <div className="flex justify-between items-center">
-          <button className="text-sky-500 font-bold text-sm underline underline-offset-4 decoration-2">
-            Save & Exit
-          </button>
-          <button className="px-4 py-1.5 border border-stone-300 rounded-lg text-sm text-stone-700 font-bold">
-            Need Help?
-          </button>
-        </div>
-
+    <OnboardingStepLayout>
+      <div className="space-y-6">
         <Autocomplete
           onLoad={(ref) => (autocompleteRef.current = ref)}
           onPlaceChanged={() => {
@@ -117,7 +111,7 @@ export default function AddressStep({
           </div>
         </Autocomplete>
 
-        <div className="rounded-[32px] overflow-hidden border border-stone-100 h-[300px] shadow-sm">
+        <div className="rounded-[32px] overflow-hidden border border-stone-100 h-[500px] shadow-sm">
           <GoogleMap
             mapContainerStyle={{ width: "100%", height: "100%" }}
             center={markerPos}
@@ -153,22 +147,21 @@ export default function AddressStep({
         </div>
       </div>
 
-      <div className="sticky bottom-0 bg-white border-t p-4 pb-8 z-50">
-        <div className="flex gap-4">
-          <button
-            onClick={onBack}
-            className="flex-1 py-3.5 border-2 border-blue-950 rounded-xl font-bold"
-          >
-            Previous
-          </button>
-          <button
-            onClick={() => fetchAddressAndConfirm(markerPos.lat, markerPos.lng)}
-            className="flex-1 py-3.5 bg-blue-900 text-white rounded-xl font-bold shadow-lg"
-          >
-            Confirm
-          </button>
-        </div>
+      <div className="onboarding-footer flex flex-col sm:flex-row justify-center gap-8 mt-10">
+        <button
+          onClick={onBack}
+          className="w-[259px] h-[75px] rounded-[14px] border-2 border-[#004772] text-[#004772] text-lg sm:text-xl font-semibold hover:bg-[#004772]/5 transition flex items-center justify-center gap-2"
+        >
+          <ChevronLeft className="w-5 h-5" />
+          Previous
+        </button>
+        <button
+          onClick={() => fetchAddressAndConfirm(markerPos.lat, markerPos.lng)}
+          className="w-[259px] h-[75px] rounded-[14px] text-white text-lg sm:text-xl font-medium transition bg-[#004772] hover:bg-[#003656] shadow-lg"
+        >
+          Confirm
+        </button>
       </div>
-    </div>
+    </OnboardingStepLayout>
   );
 }

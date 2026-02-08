@@ -1,7 +1,3 @@
-"use client";
-
-import React from "react";
-
 const Icons = {
   Translation: () => (
     <svg
@@ -60,48 +56,15 @@ const Icons = {
   ),
 };
 
-export default function Footer() {
+export default function CopyrightBar() {
   return (
-    <footer className="w-full bg-white font-poppins pt-20">
-      {/* Top Links Section */}
-      <div className="max-w-[800px] mx-auto px-6 lg:px-20 grid grid-cols-1 sm:grid-cols-2 gap-12 pb-20 text-center place-items-center justify-items-center items-center">
-        <div className="space-y-4">
-          <h3 className="text-2xl font-bold">Hosting</h3>
-          <ul className="space-y-2 text-lg text-slate-700">
-            <li>
-              <a href="/?start=1" className="hover:text-[#004772]">
-                Become a host
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        <div className="space-y-4">
-          <h3 className="text-2xl font-bold">Legal</h3>
-          <ul className="space-y-2 text-lg text-slate-700">
-            <li>
-              <a href="/terms#terms" className="hover:text-[#004772]">
-                Terms & policies
-              </a>
-            </li>
-            <li>
-              <a href="/terms#privacy-policy" className="hover:text-[#004772]">
-                Privacy policy
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://wa.me/918448337674"
-                className="hover:text-[#004772]"
-              >
-                Report an issue
-              </a>
-            </li>
-          </ul>
-        </div>
+    <div className="w-full bg-[#004772] py-10">
+      <div className="max-w-[1440px] mx-auto px-6 flex items-center justify-center gap-3 text-white">
+        <Icons.Copyright />
+        <p className="text-lg font-semibold tracking-wide">
+          2026 Hostiggo . Travel made simple
+        </p>
       </div>
-
-      {/* Social and Language Line */}
-    </footer>
+    </div>
   );
 }
