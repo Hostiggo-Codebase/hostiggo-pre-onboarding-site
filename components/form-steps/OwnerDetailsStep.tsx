@@ -49,7 +49,7 @@ export default function OwnerDetailsStep({
   };
 
   const isNextDisabled =
-    !firstName || !lastName || !phone || !city || phoneDigits.length !== 10;
+    !firstName || !lastName || !phone || !city || phoneDigits.length < 10;
 
   return (
     <OnboardingStepLayout>
