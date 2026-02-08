@@ -37,12 +37,12 @@ export default function OnboardingHeader({
           >
             Save &amp; exit
           </button>
-          <button
-            type="button"
+          <a
+            href="https://wa.me/918448337674"
             className="rounded-[14px] border-2 border-[#004772] w-[216px] h-[60px] flex items-center justify-center text-[#004772] font-poppins text-[22px] font-semibold leading-[1.28em] tracking-[0.003em] hover:bg-[#004772] hover:text-white transition-all"
           >
             Need Help?
-          </button>
+          </a>
         </div>
       </div>
       <div className="absolute left-0 right-0 bottom-0 h-2 bg-[#E6F3FA]">
