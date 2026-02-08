@@ -29,7 +29,7 @@ export default function OwnerDetailsStep({
     if (!lastName.trim()) newErrors.lastName = "Required";
     if (!phone.trim()) {
       newErrors.phone = "Required";
-    } else if (phoneDigits.length !== 10) {
+    } else if (phoneDigits.length < 10) {
       newErrors.phone = "Enter a valid 10-digit mobile number";
     }
     if (!city.trim()) newErrors.city = "Required";
