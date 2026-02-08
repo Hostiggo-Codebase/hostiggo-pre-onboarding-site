@@ -464,7 +464,8 @@ export default function OnboardingForm({
                 Successfully listed
               </h1>
               <p className="text-[#3A3A3A] text-[20px]">
-                Your property has been published and is now live on Hostiggo.
+                Your property has been published. Our team will contact you
+                shortly.
               </p>
               <div className="pt-4">
                 <button
