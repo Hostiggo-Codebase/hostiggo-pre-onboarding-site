@@ -478,8 +478,8 @@ export default function OnboardingForm({
               </div>
             </div>
           </section>
-          <Footer />
         </div>
+        <Footer />
         <CopyrightBar />
       </div>
     );

@@ -97,6 +97,11 @@ export default function EligibilityStep({
           {isSubmitting ? "Publishing..." : "Publish"}
         </button>
       </div>
+      {isPublishDisabled && (
+        <p className="mt-2 text-center text-xs sm:text-sm text-red-500">
+          Confirm both checkboxes to publish.
+        </p>
+      )}
     </OnboardingStepLayout>
   );
 }

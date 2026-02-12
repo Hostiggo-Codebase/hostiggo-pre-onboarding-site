@@ -259,6 +259,7 @@ export default function PropertyTypeStep({ formData, onNext, onBack }: Props) {
         onBack={onBack}
         onNext={handleNext}
         nextDisabled={!selectedType}
+        nextDisabledReason="Select a property type to continue."
       />
     </OnboardingStepLayout>
   );

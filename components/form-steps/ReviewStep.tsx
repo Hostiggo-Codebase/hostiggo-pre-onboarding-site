@@ -231,6 +231,11 @@ export default function ReviewStep({ formData, onSubmit }: ReviewStepProps) {
             Submit & Begin Onboarding
           </button>
         </div>
+        {!agreed && (
+          <p className="mt-2 text-center text-xs sm:text-sm text-red-500">
+            Confirm the agreement checkbox to continue.
+          </p>
+        )}
       </form>
     </OnboardingStepLayout>
   );

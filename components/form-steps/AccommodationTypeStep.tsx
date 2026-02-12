@@ -116,6 +116,11 @@ export default function AccommodationTypeStep({
           Next
         </button>
       </div>
+      {!selectedType && (
+        <p className="mt-2 text-center text-xs sm:text-sm text-red-500">
+          Select an accommodation type to continue.
+        </p>
+      )}
     </OnboardingStepLayout>
   );
 }

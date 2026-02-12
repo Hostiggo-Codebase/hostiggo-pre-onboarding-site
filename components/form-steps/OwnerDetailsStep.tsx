@@ -138,6 +138,12 @@ export default function OwnerDetailsStep({
           Next
         </button>
       </div>
+      {isNextDisabled && (
+        <p className="mt-2 text-center text-xs sm:text-sm text-red-500">
+          Enter first name, last name, city, and a valid 10-digit phone number
+          to continue.
+        </p>
+      )}
     </OnboardingStepLayout>
   );
 }

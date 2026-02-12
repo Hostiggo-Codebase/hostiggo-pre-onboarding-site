@@ -153,6 +153,11 @@ export default function PhotoUploadStep({ formData, onNext, onBack }: Props) {
           Next
         </button>
       </div>
+      {isNextDisabled && (
+        <p className="mt-2 text-center text-xs sm:text-sm text-red-500">
+          Upload at least 3 photos to continue.
+        </p>
+      )}
     </OnboardingStepLayout>
   );
 }

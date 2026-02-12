@@ -97,6 +97,11 @@ export default function ListingTitleStep({ formData, onNext, onBack }: Props) {
           Next
         </button>
       </div>
+      {!isTitleValid && (
+        <p className="mt-2 text-center text-xs sm:text-sm text-red-500">
+          Add a title (max {maxChars} characters) to continue.
+        </p>
+      )}
     </OnboardingStepLayout>
   );
 }
