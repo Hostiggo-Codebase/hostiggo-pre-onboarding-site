@@ -21,9 +21,7 @@ export default function TermsPage() {
               <h1 className="text-[44px] sm:text-[56px] font-semibold text-[#004772]">
                 Terms & Policies
               </h1>
-              <p className="text-[#494949] text-[18px]">
-                Last Updated: February 8, 2026
-              </p>
+              <p className="text-[#494949] text-[18px]"></p>
             </div>
 
             <div className="mt-6 flex flex-wrap gap-6 text-[18px] font-semibold">
@@ -38,6 +36,12 @@ export default function TermsPage() {
                 className="text-[#004772] hover:opacity-70 transition-all"
               >
                 Cancellation & Refund Policy
+              </Link>
+              <Link
+                href="#host-protection-policy"
+                className="text-[#004772] hover:opacity-70 transition-all"
+              >
+                Host Protection & Damage Insurance Policy
               </Link>
               <Link
                 href="#privacy-policy"
@@ -405,6 +409,92 @@ export default function TermsPage() {
                       acceptance of the updated policies.
                     </p>
                   </div>
+                </div>
+              </section>
+
+              <section
+                id="host-protection-policy"
+                className="scroll-mt-[140px] space-y-6"
+              >
+                <h2 className="text-[32px] font-semibold text-[#004772]">
+                  Hostiggo Host Protection & Damage Insurance Policy
+                </h2>
+                <div className="space-y-6 text-[18px] leading-[1.9] text-[#3A3A3A]">
+                  <p>
+                    This policy is designed to protect Hosts listing their
+                    properties on Hostiggo against damages caused by Guests
+                    during their stay. Hostiggo is committed to ensuring that
+                    Hosts receive timely compensation while maintaining a fair,
+                    transparent, and structured dispute resolution process for
+                    all parties involved.
+                  </p>
+                  <p>
+                    This insurance policy applies when a listed property suffers
+                    physical damage caused by a confirmed Guest booking, and the
+                    damage occurs during the official booking period. To qualify
+                    for coverage, the Host must provide proper evidence such as
+                    clear photos, videos, invoices, or inspection reports.
+                    Covered damages may include furniture damage, appliance
+                    damage, structural damage (including walls, doors, and
+                    windows), as well as theft or intentional destruction.
+                    However, normal wear and tear resulting from regular use of
+                    the property is not covered under this policy.
+                  </p>
+                  <p>
+                    In the event of damage, the Host must report the issue
+                    within twenty-four (24) hours of guest checkout. The Host is
+                    required to upload clear visual evidence along with an
+                    estimated repair invoice or cost breakdown. Once submitted,
+                    Hostiggo will review the claim within one (1) to three (3)
+                    working hours to assess the validity and determine the
+                    appropriate action.
+                  </p>
+                  <p>
+                    Upon approval of a damage claim, Hostiggo will immediately
+                    contact the Guest and charge the verified damage amount.
+                    The amount may be deducted from the Guest’s security
+                    deposit, if applicable, or from the payment method on file.
+                    If the Guest accepts liability, the funds will be
+                    transferred to the Host within one (1) to five (5) working
+                    hours following confirmation.
+                  </p>
+                  <p>
+                    If the Guest disputes the claim, Hostiggo will initiate an
+                    internal investigation. Evidence submitted by both the Host
+                    and the Guest will be carefully reviewed, and a final
+                    decision will be issued within twenty-four (24) to
+                    forty-eight (48) hours. If the dispute is resolved in favor
+                    of the Host, Hostiggo Insurance will immediately compensate
+                    the Host. In such cases, the Guest’s account may be
+                    permanently blocked, removed from the platform, and
+                    restricted from making future bookings.
+                  </p>
+                  <p>
+                    Hostiggo provides an insurance guarantee to ensure Host
+                    protection. If a Guest refuses payment, if the Guest’s
+                    payment method fails, or if a dispute remains unresolved but
+                    the evidence supports the Host’s claim, Hostiggo Insurance
+                    guarantees payment of the verified damage amount. The
+                    approved compensation will be transferred to the Host within
+                    one (1) to five (5) working hours after final approval.
+                  </p>
+                  <p>
+                    The standard payment timeline includes a claim review period
+                    of one (1) to three (3) working hours, immediate guest
+                    contact upon approval, and Host payment within one (1) to
+                    five (5) working hours after claim approval. Coverage is
+                    limited strictly to verified and documented damages.
+                    Fraudulent or misleading claims may result in suspension of
+                    the Host’s account. Additionally, maximum coverage per
+                    booking may be subject to Hostiggo’s insurance cap as
+                    defined in the platform’s terms.
+                  </p>
+                  <p>
+                    Guests found responsible for property damage may face
+                    permanent account suspension, legal recovery action where
+                    applicable, and reporting to relevant authorities in cases
+                    involving serious misconduct or intentional harm.
+                  </p>
                 </div>
               </section>
 
