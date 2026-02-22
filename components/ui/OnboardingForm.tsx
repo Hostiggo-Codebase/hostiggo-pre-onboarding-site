@@ -24,6 +24,33 @@ import CopyrightBar from "@/components/ui/Copyrightbar";
 import Header from "@/components/ui/Header";
 import Footer from "@/components/ui/Footer";
 
+import {
+  Utensils,
+  Coffee,
+  ChefHat,
+  Package,
+  UserRound,
+  PartyPopper,
+  MoonStar,
+  Heart,
+  CalendarDays,
+  Music,
+  Mountain,
+  Tent,
+  Bike,
+  Waves,
+  User,
+  Compass,
+  Car,
+  Bus,
+  Camera,
+  Video,
+  Plane,
+  Leaf,
+  Sparkles,
+  Wind,
+} from "lucide-react";
+
 interface Bedroom {
   guests: number;
   beds: number;
@@ -95,6 +122,88 @@ export interface FormData {
   contactPreference: "whatsapp" | "call" | "email";
 }
 
+const addOnsCATEGORIES = [
+  {
+    name: "Food & Dining",
+    items: [
+      {
+        id: "breakfast",
+        label: "Breakfast",
+        icon: ChefHat,
+        details: {
+          price: 200,
+          includes: "Tea and sandwiches",
+          timings: { from: "08:00 AM", to: "10:00 AM" },
+        },
+      },
+      { id: "lunch", label: "Lunch", icon: Utensils },
+      { id: "dinner", label: "Dinner", icon: Utensils },
+      { id: "snacks", label: "Snacks and evening tea", icon: Coffee },
+      {
+        id: "packed_meals",
+        label: "Packed meals for travelling",
+        icon: Package,
+      },
+      { id: "private_chef", label: "Private chef service", icon: UserRound },
+    ],
+  },
+  {
+    name: "Events and Decorations",
+    items: [
+      { id: "birthday", label: "Birthday decorations", icon: PartyPopper },
+      { id: "honeymoon", label: "Honeymoon setup", icon: MoonStar },
+      { id: "proposal", label: "Proposal setup", icon: Heart },
+      {
+        id: "small_events",
+        label: "Small events and gathering",
+        icon: CalendarDays,
+      },
+      { id: "music", label: "Music / speaker arrangements", icon: Music },
+    ],
+  },
+  {
+    name: "Adventure & Experiences",
+    items: [
+      { id: "trekking", label: "Trekking Guide", icon: Mountain },
+      { id: "camping", label: "Camping & Bonfire Experience", icon: Tent },
+      { id: "cycling", label: "Cycling Tours", icon: Bike },
+      { id: "rafting", label: "River Rafting", icon: Waves },
+    ],
+  },
+  {
+    name: "Drive, Car & Transport",
+    items: [
+      { id: "local_driver", label: "Local Driver", icon: User },
+      { id: "sightseeing", label: "Sightseeing Driver", icon: Compass },
+      { id: "car_rental", label: "Car Rental", icon: Car },
+      { id: "tempo", label: "Tempo Traveller", icon: Bus },
+      { id: "bike_rental", label: "Bike / Scooter Rental", icon: Bike },
+    ],
+  },
+  {
+    name: "Photography & Media",
+    items: [
+      { id: "photographer", label: "Local Photographer", icon: Camera },
+      { id: "videographer", label: "Videographer", icon: Video },
+      { id: "drone", label: "Drone Shoot", icon: Plane },
+    ],
+  },
+  {
+    name: "Wellness & Lifestyle",
+    items: [
+      { id: "yoga", label: "Yoga Sessions", icon: Wind },
+      { id: "meditation", label: "Meditation Sessions", icon: Sparkles },
+      { id: "massage", label: "Massage / Spa", icon: User },
+      { id: "ayurveda", label: "Ayurveda & Wellness Programs", icon: Leaf },
+    ],
+  },
+  {
+    name: "Custom Add-on (You can define your own add-on with custom details)",
+    items: [],
+  },
+];
+
+
 export default function OnboardingForm({
   onBack,
   onExit,
@@ -145,6 +254,7 @@ export default function OnboardingForm({
     contactPreference: "whatsapp",
   };
   const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [addOnscategories, setAddOnsCategories] = useState(addOnsCATEGORIES);
 
   useEffect(() => {
     try {
@@ -225,6 +335,7 @@ export default function OnboardingForm({
     if (editingAddonId) {
       return (
         <EditAddonStep
+          id={editingAddonId}
           addon={formData.paidAddons[editingAddonId]}
           onSave={(updatedData: PaidAddon) => {
             const newAddons = {
@@ -244,6 +355,8 @@ export default function OnboardingForm({
         onNext={handleNext}
         onBack={handleBack}
         onEdit={(id) => setEditingAddonId(id)} // Pass trigger to child
+        categories={addOnscategories}
+        setCategories={setAddOnsCategories}
       />
     );
   };
@@ -372,6 +485,11 @@ export default function OnboardingForm({
       />
     );
   };
+
+  useEffect(() => {
+    console.log("Current form data:", formData);
+  }, [formData]);
+
   // In OnboardingForm.tsx
   const steps = [
     <OwnerDetailsStep
@@ -446,7 +564,6 @@ export default function OnboardingForm({
     <EligibilityStep
       key="eligibility"
       formData={formData}
-      onNext={handleNext}
       onBack={handleBack}
       onSubmit={handleSubmit}
       isSubmitting={isSubmitting}

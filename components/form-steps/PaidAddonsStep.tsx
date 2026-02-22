@@ -2,35 +2,11 @@
 
 import React, { useState } from "react";
 import {
-  Utensils,
-  Coffee,
-  ChefHat,
-  Package,
-  UserRound,
-  PartyPopper,
-  MoonStar,
-  Heart,
-  CalendarDays,
-  Music,
-  Mountain,
-  Tent,
-  Bike,
-  Waves,
-  User,
-  Compass,
-  Car,
-  Bus,
-  Camera,
-  Video,
-  Plane,
-  Smile,
-  Leaf,
-  Flower2,
   Lightbulb,
   Edit2,
   ChevronLeft,
-  Sparkles,
-  Wind,
+  Plus,
+  PlusCircle,
 } from "lucide-react";
 import OnboardingStepLayout from "./OnboardingStepLayout";
 
@@ -39,94 +15,42 @@ interface Props {
   onNext: (data: any) => void;
   onBack: () => void;
   onEdit: (id: string) => void;
+  categories: {
+    name: string;
+    items: {
+      id: string;
+      label: string;
+      icon: any;
+      details?: any;
+    }[];
+  }[];
+  setCategories: React.Dispatch<React.SetStateAction<{
+    name: string;
+    items: {
+      id: string;
+      label: string;
+      icon: any;
+      details?: any;
+    }[];
+  }[]>>;
 }
-
-const CATEGORIES = [
-  {
-    name: "Food & Dining",
-    items: [
-      {
-        id: "breakfast",
-        label: "Breakfast",
-        icon: ChefHat,
-        details: {
-          price: 200,
-          includes: "Tea and sandwiches",
-          timings: { from: "08:00 AM", to: "10:00 AM" },
-        },
-      },
-      { id: "lunch", label: "Lunch", icon: Utensils },
-      { id: "dinner", label: "Dinner", icon: Utensils },
-      { id: "snacks", label: "Snacks and evening tea", icon: Coffee },
-      {
-        id: "packed_meals",
-        label: "Packed meals for travelling",
-        icon: Package,
-      },
-      { id: "private_chef", label: "Private chef service", icon: UserRound },
-    ],
-  },
-  {
-    name: "Events and Decorations",
-    items: [
-      { id: "birthday", label: "Birthday decorations", icon: PartyPopper },
-      { id: "honeymoon", label: "Honeymoon setup", icon: MoonStar },
-      { id: "proposal", label: "Proposal setup", icon: Heart },
-      {
-        id: "small_events",
-        label: "Small events and gathering",
-        icon: CalendarDays,
-      },
-      { id: "music", label: "Music / speaker arrangements", icon: Music },
-    ],
-  },
-  {
-    name: "Adventure & Experiences",
-    items: [
-      { id: "trekking", label: "Trekking Guide", icon: Mountain },
-      { id: "camping", label: "Camping & Bonfire Experience", icon: Tent },
-      { id: "cycling", label: "Cycling Tours", icon: Bike },
-      { id: "rafting", label: "River Rafting", icon: Waves },
-    ],
-  },
-  {
-    name: "Drive, Car & Transport",
-    items: [
-      { id: "local_driver", label: "Local Driver", icon: User },
-      { id: "sightseeing", label: "Sightseeing Driver", icon: Compass },
-      { id: "car_rental", label: "Car Rental", icon: Car },
-      { id: "tempo", label: "Tempo Traveller", icon: Bus },
-      { id: "bike_rental", label: "Bike / Scooter Rental", icon: Bike },
-    ],
-  },
-  {
-    name: "Photography & Media",
-    items: [
-      { id: "photographer", label: "Local Photographer", icon: Camera },
-      { id: "videographer", label: "Videographer", icon: Video },
-      { id: "drone", label: "Drone Shoot", icon: Plane },
-    ],
-  },
-  {
-    name: "Wellness & Lifestyle",
-    items: [
-      { id: "yoga", label: "Yoga Sessions", icon: Wind },
-      { id: "meditation", label: "Meditation Sessions", icon: Sparkles },
-      { id: "massage", label: "Massage / Spa", icon: User },
-      { id: "ayurveda", label: "Ayurveda & Wellness Programs", icon: Leaf },
-    ],
-  },
-];
 
 export default function PaidAddonsStep({
   formData,
   onNext,
   onBack,
   onEdit,
+  categories,
+  setCategories,
 }: Props) {
   const [selectedAddons, setSelectedAddons] = useState<Record<string, any>>(
     formData.paidAddons || {},
   );
+
+  // const [categories, setCategories] = useState(CATEGORIES);
+  const [selectingCustomAddon, setSelectingCustomAddon] = useState(false);
+  const [customAddonName, setCustomAddonName] = useState("");
+  const [customAddonError, setCustomAddonError] = useState<string | null>(null);
 
   const toggleAddon = (id: string, defaultDetails?: any) => {
     setSelectedAddons((prev) => {
@@ -160,6 +84,49 @@ export default function PaidAddonsStep({
     onNext({ paidAddons: selectedAddons });
   };
 
+  const handleAddCustomAddon = () => {
+    if (!selectingCustomAddon) setSelectingCustomAddon(true);
+    else {
+      const newAddonId = customAddonName.trim();
+
+      if (!newAddonId) return; // ignore empty input
+
+      // Check for duplicate across all categories
+      const isDuplicate = categories.some((cat) =>
+        cat.items.some((item) => item.id === newAddonId)
+      );
+
+      if (isDuplicate) {
+        setCustomAddonError("An add-on with this name already exists.");
+        return;
+      }
+
+      setCustomAddonError(null);
+
+      setCategories((prev) =>
+        prev.map((cat) => {
+          if (cat.name === "Custom Add-on (You can define your own add-on with custom details)") {
+            return {
+              ...cat,
+              items: [
+                ...cat.items,
+                {
+                  id: newAddonId,
+                  label: customAddonName.trim(),
+                  icon: PlusCircle,
+                },
+              ],
+            };
+          }
+          return cat;
+        })
+      );
+      toggleAddon(newAddonId, { price: 500, includes: "Not specified", timings: "Not set" }); // auto-select the newly added custom add-on
+      setCustomAddonName("");
+      setSelectingCustomAddon(false);
+    }
+  };
+
   return (
     <OnboardingStepLayout>
       <div className="space-y-6">
@@ -184,7 +151,9 @@ export default function PaidAddonsStep({
 
         {/* Categories and Add-on Cards */}
         <div className="space-y-10 pb-4">
-          {CATEGORIES.map((cat) => (
+          {categories.filter((cat) => 
+              !(cat.name === "Custom Add-on (You can define your own add-on with custom details)" && cat.items.length === 0)
+            ).map((cat) => (
             <div key={cat.name} className="space-y-4">
               <h3 className="text-lg font-bold text-blue-950">{cat.name}</h3>
               <div className="space-y-3">
@@ -271,6 +240,39 @@ export default function PaidAddonsStep({
             </div>
           ))}
         </div>
+
+        {!selectingCustomAddon && (
+        <button
+          type="button"
+          onClick={handleAddCustomAddon}
+          className="w-[259px] h-[75px] rounded-[14px] border-2 border-dashed border-[#004772] text-[#004772] text-lg sm:text-xl font-semibold hover:bg-[#004772]/5 transition flex items-center justify-center gap-2"
+        >
+          <Plus className="w-5 h-5" /> Add Custom Add-on
+        </button>
+        )}
+
+        {selectingCustomAddon && (
+          <div className="flex items-center gap-3 mt-4 px-1">
+            <input
+              type="text"
+              placeholder="Enter custom add-on name..."
+              value={customAddonName}
+              onChange={(e) => setCustomAddonName(e.target.value)}
+              className="flex-1 h-[52px] rounded-[14px] border-2 border-[#004772] px-4 text-[#004772] text-base font-medium placeholder:text-[#004772]/40 focus:outline-none focus:ring-2 focus:ring-[#004772]/30 transition"
+            />
+            <button
+              type="button"
+              onClick={handleAddCustomAddon}
+              className="h-[52px] px-6 rounded-[14px] bg-[#004772] text-white text-base font-semibold hover:bg-[#003656] shadow-lg transition"
+            >
+              Add
+            </button>
+          </div>
+        )}
+
+        {customAddonError && (
+          <p className="text-red-500 text-sm mt-1 px-1">{customAddonError}</p>
+        )}
 
         <p className="text-stone-400 text-xs text-center py-10 leading-relaxed max-w-[250px] mx-auto">
           More options will be available after you publish your listing.

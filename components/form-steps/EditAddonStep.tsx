@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Coffee, Plus, Info, ChevronLeft } from "lucide-react";
 import OnboardingStepLayout from "./OnboardingStepLayout";
 
-export default function EditAddonStep({ addon, onSave, onBack }: any) {
+export default function EditAddonStep({ id, addon, onSave, onBack }: any) {
   const [price, setPrice] = useState(addon?.price || 200);
   const [includes, setIncludes] = useState(
     addon?.includes || "Tea and sandwiches",
@@ -47,8 +47,7 @@ export default function EditAddonStep({ addon, onSave, onBack }: any) {
         <h2 className="text-xl font-bold text-blue-950">Edit add-ons</h2>
 
         <div className="flex items-center gap-3">
-          <Coffee className="w-6 h-6 text-stone-700" />
-          <span className="text-xl font-bold text-blue-950">Breakfast</span>
+          <span className="text-xl font-bold text-blue-950">{id || "Breakfast"}</span>
         </div>
 
         <div className="bg-stone-50/50 rounded-3xl p-6 border border-stone-100 space-y-8">
