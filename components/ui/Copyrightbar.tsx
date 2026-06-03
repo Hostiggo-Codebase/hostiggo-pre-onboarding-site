@@ -59,10 +59,15 @@ const Icons = {
 export default function CopyrightBar() {
   return (
     <div className="w-full bg-[#004772] py-10">
-      <div className="max-w-[1440px] mx-auto px-6 flex items-center justify-center gap-3 text-white">
-        <Icons.Copyright />
-        <p className="text-lg font-semibold tracking-wide">
-          2026 Hostiggo . Travel made simple
+      <div className="max-w-[1440px] mx-auto px-6 flex flex-col items-center gap-3 text-white text-center">
+        <div className="flex items-center gap-3">
+          <Icons.Copyright />
+          <p className="text-lg font-semibold tracking-wide">
+            2026 Hostiggo . Travel made simple
+          </p>
+        </div>
+        <p className="text-sm text-blue-200">
+          A-176-A, Basement, Ganesh Nagar, Tilak Nagar (West Delhi), New Delhi, West Delhi – 110018, Delhi
         </p>
       </div>
     </div>
